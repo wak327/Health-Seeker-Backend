@@ -22,12 +22,15 @@ class Appointment(Base):
     id = Column(Integer, primary_key=True, index=True)
     patient_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
     doctor_id = Column(Integer, ForeignKey("users.id", ondelete="SET NULL"))
+    schedule_id = Column(Integer, ForeignKey("doctor_schedules.id", ondelete="SET NULL"))
     scheduled_time = Column(DateTime, nullable=False)
     reason = Column(String(255), nullable=False)
     status = Column(
         Enum(AppointmentStatus), nullable=False, default=AppointmentStatus.PENDING
     )
     notes = Column(Text)
+    diagnosis = Column(Text)
+    prescription = Column(Text)
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
     updated_at = Column(
         DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False
@@ -40,3 +43,4 @@ class Appointment(Base):
         "User", foreign_keys=[doctor_id], back_populates="doctor_appointments"
     )
     tasks = relationship("BackgroundTaskRecord", back_populates="appointment")
+    schedule = relationship("DoctorSchedule", back_populates="appointments")

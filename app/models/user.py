@@ -3,16 +3,17 @@ from __future__ import annotations
 import enum
 from datetime import datetime
 
-from sqlalchemy import Column, DateTime, Enum, Integer, String
+from sqlalchemy import Boolean, Column, DateTime, Enum, Integer, String
 from sqlalchemy.orm import relationship
 
 from app.db.base import Base
 
 
 class UserRole(str, enum.Enum):
-    PATIENT = "patient"
-    DOCTOR = "doctor"
+    SUPERADMIN = "superadmin"
     ADMIN = "admin"
+    DOCTOR = "doctor"
+    PATIENT = "patient"
 
 
 class User(Base):
@@ -23,6 +24,7 @@ class User(Base):
     full_name = Column(String(255), nullable=False)
     role = Column(Enum(UserRole), nullable=False, index=True)
     hashed_password = Column(String(255), nullable=False)
+    is_active = Column(Boolean, default=True, nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
     updated_at = Column(
         DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False
@@ -35,3 +37,9 @@ class User(Base):
         "Appointment", foreign_keys="Appointment.doctor_id", back_populates="doctor"
     )
     lab_results = relationship("LabResult", back_populates="patient")
+    doctor_profile = relationship(
+        "DoctorProfile", back_populates="user", cascade="all, delete-orphan", uselist=False
+    )
+    patient_profile = relationship(
+        "PatientProfile", back_populates="user", cascade="all, delete-orphan", uselist=False
+    )

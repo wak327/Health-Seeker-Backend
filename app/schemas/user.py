@@ -19,7 +19,9 @@ class UserCreate(UserBase):
 class UserUpdate(ORMModel):
     full_name: Optional[str] = None
     password: Optional[str] = Field(default=None, min_length=8, max_length=128)
+    is_active: Optional[bool] = None
 
 
 class UserPublic(UserBase, MutableTimestampedModel):
     id: int
+    is_active: bool
