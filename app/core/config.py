@@ -29,6 +29,14 @@ class Settings(BaseSettings):
 
     log_level: str = "INFO"
 
+    jwt_secret_key: str = "change-me"
+    jwt_algorithm: str = "HS256"
+    access_token_expire_minutes: int = 60
+
+    superadmin_email: str | None = None
+    superadmin_password: str | None = None
+    superadmin_full_name: str = "Super Admin"
+
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
 
 
