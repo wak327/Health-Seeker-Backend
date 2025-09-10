@@ -3,7 +3,7 @@ from __future__ import annotations
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api.routers import appointments, lab_results, tasks, users
+from app.api.routers import appointments, auth, doctors, lab_results, patients, tasks, users
 from app.core.config import get_settings
 from app.core.events import event_bus
 from app.db.session import SessionLocal
@@ -22,6 +22,9 @@ app.add_middleware(
 )
 
 app.include_router(users.router, prefix=settings.api_v1_prefix)
+app.include_router(auth.router, prefix=settings.api_v1_prefix)
+app.include_router(doctors.router, prefix=settings.api_v1_prefix)
+app.include_router(patients.router, prefix=settings.api_v1_prefix)
 app.include_router(appointments.router, prefix=settings.api_v1_prefix)
 app.include_router(lab_results.router, prefix=settings.api_v1_prefix)
 app.include_router(tasks.router, prefix=settings.api_v1_prefix)

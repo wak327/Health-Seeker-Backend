@@ -1,3 +1,11 @@
-from . import appointments, lab_results, tasks, users
+from . import appointments, auth, doctors, lab_results, patients, tasks, users
 
-__all__ = ["appointments", "lab_results", "tasks", "users"]
+__all__ = [
+    "appointments",
+    "auth",
+    "doctors",
+    "lab_results",
+    "patients",
+    "tasks",
+    "users",
+]

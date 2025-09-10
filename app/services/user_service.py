@@ -36,6 +36,8 @@ class UserService:
             user.full_name = user_in.full_name
         if user_in.password:
             user.hashed_password = security.hash_password(user_in.password)
+        if user_in.is_active is not None:
+            user.is_active = user_in.is_active
         self.session.add(user)
         self.session.commit()
         self.session.refresh(user)
